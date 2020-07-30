@@ -13,8 +13,6 @@ public interface UserService {
 
     User addUser(User user);
 
-    List<Order> getOrdersByUserId(Integer userId);
-
     List<User> getAllUsers();
 
     User changeUserStatusByUserId(Integer userId);

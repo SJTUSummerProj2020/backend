@@ -100,9 +100,8 @@ public class UserController {
 
         JSONObject data = JSONObject.fromObject(user);
         data.remove(Constant.PASSWORD);
-        data.remove(Constant.ORDERS);
+        // data.remove(Constant.ORDERS);
         data.remove(Constant.PHONE);
-        data.remove(Constant.ORDERS);
 
         return MsgUtil.makeMsg(MsgCode.SUCCESS, MsgUtil.LOGIN_SUCCESS_MSG, data);
 
@@ -130,17 +129,17 @@ public class UserController {
         }
     }
 
-    @GetMapping("/getOrdersByUserId/{userId}")
-    public Msg getOrdersByUserId(@PathVariable Integer userId) {
-        JSONObject user = SessionUtil.getAuth();
-//        Integer userId = user.getInt(Constant.USER_ID);
-        List<Order> orders = userService.getOrdersByUserId(userId);
-
-        JSONArray orderList = JSONArray.fromObject(orders);
-        JSONObject data = new JSONObject();
-        data.put("order", orderList);
-        return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
-    }
+//    @GetMapping("/getOrdersByUserId/{userId}")
+//    public Msg getOrdersByUserId(@PathVariable Integer userId) {
+//        JSONObject user = SessionUtil.getAuth();
+////        Integer userId = user.getInt(Constant.USER_ID);
+//        List<Order> orders = userService.getOrdersByUserId(userId);
+//
+//        JSONArray orderList = JSONArray.fromObject(orders);
+//        JSONObject data = new JSONObject();
+//        data.put("order", orderList);
+//        return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
+//    }
 
     @RequestMapping("/getAllUsers")
     public Msg getAllUsers() {

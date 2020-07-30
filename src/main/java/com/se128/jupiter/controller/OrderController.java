@@ -75,6 +75,15 @@ public class OrderController {
         data.put("orders", orderList.toString());
         return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
     }
+
+    @GetMapping("/getOrdersByUserId/{userId}")
+    public Msg getOrdersByUserId(@PathVariable Integer userId){
+        List<Order> orders = orderService.getOrdersByUserId(userId);
+        JSONArray orderList = JSONArray.fromObject(orders);
+        JSONObject data = new JSONObject();
+        data.put("order", orderList);
+        return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
+    }
 }
 
 

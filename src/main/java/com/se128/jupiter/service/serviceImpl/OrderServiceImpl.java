@@ -32,4 +32,9 @@ public class OrderServiceImpl implements OrderService {
     public List<Order> getAllOrders() {
         return orderDao.getAllOrders();
     }
+
+    @Override
+    public List<Order> getOrdersByUserId(Integer userId) {
+        return orderDao.getOrdersByUserId(userId);
+    }
 }

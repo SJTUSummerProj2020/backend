@@ -9,4 +9,6 @@ public interface OrderDao {
     Order addOrder(Order order,Integer detailId);
 
     List<Order> getAllOrders();
+
+    List<Order> getOrdersByUserId(Integer userId);
 }
