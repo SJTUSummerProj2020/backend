@@ -141,7 +141,7 @@ public class UserController {
 //        return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
 //    }
 
-    @RequestMapping("/getAllUsers")
+    @GetMapping("/getAllUsers")
     public Msg getAllUsers() {
         logger.info("getAllUsers");
         List<User> users = userService.getAllUsers();
