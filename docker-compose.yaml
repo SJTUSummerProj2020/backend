@@ -1,0 +1,34 @@
+version: '3.2'
+
+services:
+  backend:
+    image: docker.pkg.github.com/heycat-svg/jupiter-backend/backend:v0.1.5
+    ports:
+      - "8080:8080"
+    environment:
+      - JVM_OPTS="-Xms128m -Xmx128m -XX:PermSize=128m -XX:MaxPermSize=128m"
+    networks:
+      - demo
+
+  prometheus:
+    image: prom/prometheus
+    volumes:
+      - type: bind
+        source: ./prometheus.yml
+        target: /etc/prometheus/prometheus.yml
+        read_only: true
+    ports:
+      - "9090:9090"
+    networks:
+      - demo
+
+  grafana:
+    image: grafana/grafana
+    ports:
+      - "3000:3000"
+    networks:
+      - demo
+
+networks:
+  demo:
+    driver: bridge
