@@ -7,20 +7,21 @@ import com.se128.jupiter.util.msgutils.Msg;
 import com.se128.jupiter.util.msgutils.MsgCode;
 import com.se128.jupiter.util.msgutils.MsgUtil;
 import com.se128.jupiter.util.sessionutils.SessionUtil;
+import io.swagger.annotations.Api;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.sql.Timestamp;
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@Api("订单类")
+@RequestMapping("order")
 public class OrderController {
 
     private final OrderService orderService;
@@ -31,7 +32,7 @@ public class OrderController {
         this.orderService = orderService;
     }
 
-    @RequestMapping("/addOrder")
+    @PutMapping("/addOrder")
     public Msg addOrder(@RequestBody Map<String, String> params) {
 
         logger.info("addOrder");
@@ -65,13 +66,22 @@ public class OrderController {
         return MsgUtil.makeMsg(MsgCode.ADD_SUCCESS, MsgUtil.BUY_SUCCESS_MSG, data);
     }
 
-    @RequestMapping("/getAllOrders")
+    @GetMapping("/getAllOrders")
     public Msg getAllOrders() {
         logger.info("getAllOrders");
         List<Order> orders = orderService.getAllOrders();
         JSONObject data = new JSONObject();
         JSONArray orderList = JSONArray.fromObject(orders);
         data.put("orders", orderList.toString());
+        return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
+    }
+
+    @GetMapping("/getOrdersByUserId/{userId}")
+    public Msg getOrdersByUserId(@PathVariable Integer userId){
+        List<Order> orders = orderService.getOrdersByUserId(userId);
+        JSONArray orderList = JSONArray.fromObject(orders);
+        JSONObject data = new JSONObject();
+        data.put("order", orderList);
         return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
     }
 }

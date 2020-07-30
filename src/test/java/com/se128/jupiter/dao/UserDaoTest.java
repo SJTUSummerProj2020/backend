@@ -70,20 +70,20 @@ class UserDaoTest {
         assertNull(userDao.addUser(user));
     }
 
-    @Test
-    void getOrdersByUserId() {
-        Order order = new Order();
-        List<Order> orderList = new ArrayList<>();
-        orderList.add(order);
-        orderList.add(order);
-        Integer userId = 1;
-        User user = new User();
-        user.setOrders(orderList);
-        user.setUserId(userId);
-
-        when(userRepository.getUserByUserId(userId)).thenReturn(user);
-        assertEquals(orderList, userDao.getOrdersByUserId(userId));
-    }
+//    @Test
+//    void getOrdersByUserId() {
+//        Order order = new Order();
+//        List<Order> orderList = new ArrayList<>();
+//        orderList.add(order);
+//        orderList.add(order);
+//        Integer userId = 1;
+//        User user = new User();
+//        user.setOrders(orderList);
+//        user.setUserId(userId);
+//
+//        when(userRepository.getUserByUserId(userId)).thenReturn(user);
+//        assertEquals(orderList, userDao.getOrdersByUserId(userId));
+//    }
 
     @Test
     void getAllUsers() {
