@@ -239,6 +239,9 @@ public class GoodsController {
         Integer AuctionId = Integer.valueOf(params.get(Constant.AUCTION_ID));
         Double offer = Double.valueOf(params.get(Constant.OFFER));
         JSONObject user = SessionUtil.getAuth();
+        if(user == null){
+            return MsgUtil.makeMsg(MsgCode.EDIT_ERROR);
+        }
         Integer userId = user.getInt(Constant.USER_ID);
         logger.info("updateAuction auctionsId = " + AuctionId+ " userId = " + userId);
         Auction auction = goodsService.updateAuction(AuctionId,userId,offer);
