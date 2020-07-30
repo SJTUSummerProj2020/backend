@@ -2,7 +2,7 @@ version: '3.2'
 
 services:
   backend:
-    image: docker.pkg.github.com/heycat-svg/jupiter-backend/backend:v0.1.5
+    image: docker.pkg.github.com/heycat-svg/jupiter-backend/backend:v0.1.6
     ports:
       - "8080:8080"
     environment:
