@@ -8,19 +8,20 @@ import com.se128.jupiter.util.msgutils.Msg;
 import com.se128.jupiter.util.msgutils.MsgCode;
 import com.se128.jupiter.util.msgutils.MsgUtil;
 import com.se128.jupiter.util.sessionutils.SessionUtil;
+import io.swagger.annotations.Api;
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.Map;
 
 @RestController
+@Api(value="用户管理类")
+@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -31,7 +32,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @RequestMapping("/register")
+    @PostMapping("/register")
     public Msg register(@RequestBody User user) {
         logger.info("register");
         user.setUserType(Constant.Customer);
@@ -48,7 +49,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/changeUserStatusByUserId")
+    @PostMapping("/changeUserStatusByUserId")
     public Msg changeUserStatusByUserId(@RequestBody Map<String, String> params) {
         Integer userId = Integer.valueOf(params.get(Constant.USER_ID));
         logger.info("changeUserStatusByUserId = " + userId);
@@ -68,23 +69,24 @@ public class UserController {
         return MsgUtil.makeMsg(MsgCode.EDIT_SUCCESS, data);
     }
 
-    @RequestMapping("/getUserById")
-    public Msg getUserById(@RequestBody Map<String, String> params) {
+    @GetMapping("/getUserById/{userId}")
+    public Msg getUserById(@PathVariable Integer userId) {
 
-        Integer userId = Integer.valueOf(params.get(Constant.USER_ID));
+//        Integer userId = Integer.valueOf(params.get(Constant.USER_ID));
         logger.info("getUserById = " + userId);
         User user = userService.getUserByUserId(userId);
         JSONObject data = JSONObject.fromObject(user);
         return MsgUtil.makeMsg(MsgCode.SUCCESS, data);
     }
 
-    @RequestMapping("/login")
+    @PostMapping("/login")
     public Msg login(@RequestBody Map<String, String> params) {
         logger.info("login");
         String username = params.get(Constant.USERNAME);
         String password = params.get(Constant.PASSWORD);
         User user = userService.getUserByUsernameAndPassword(username, password);
         if (user == null) {
+            System.out.println("user is null");
             return MsgUtil.makeMsg(MsgCode.ERROR, MsgUtil.LOGIN_USER_ERROR_MSG);
         }
         if (user.getUserType() == -1) {
@@ -106,7 +108,7 @@ public class UserController {
 
     }
 
-    @RequestMapping("/logout")
+    @PostMapping("/logout")
     public Msg logout() {
         logger.info("logout");
         Boolean status = SessionUtil.removeSession();
@@ -116,7 +118,7 @@ public class UserController {
         return MsgUtil.makeMsg(MsgCode.ERROR, MsgUtil.LOGOUT_ERR_MSG);
     }
 
-    @RequestMapping("/checkSession")
+    @GetMapping("/checkSession")
     public Msg checkSession() {
         logger.info("checkSession");
         JSONObject auth = SessionUtil.getAuth();
@@ -128,10 +130,10 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/getOrdersByUserId")
-    public Msg getOrdersByUserId(@RequestBody Map<String, String> params) {
+    @GetMapping("/getOrdersByUserId/{userId}")
+    public Msg getOrdersByUserId(@PathVariable Integer userId) {
         JSONObject user = SessionUtil.getAuth();
-        Integer userId = user.getInt(Constant.USER_ID);
+//        Integer userId = user.getInt(Constant.USER_ID);
         List<Order> orders = userService.getOrdersByUserId(userId);
 
         JSONArray orderList = JSONArray.fromObject(orders);
