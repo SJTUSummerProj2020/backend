@@ -15,9 +15,7 @@ import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -28,6 +26,7 @@ import java.util.Map;
 
 @RestController
 @Api(value = "票务管理类")
+@RequestMapping("/goods")
 public class GoodsController {
 
     private final GoodsService goodsService;
@@ -39,7 +38,7 @@ public class GoodsController {
     }
 
 
-    @RequestMapping("/addGoods")
+    @PutMapping("/addGoods")
     public Msg addGoods(@RequestBody Goods goods) {
         logger.info("addGoods" + goods);
         goods.setBuyCounter(0);
@@ -49,18 +48,18 @@ public class GoodsController {
         return MsgUtil.makeMsg(MsgCode.ADD_SUCCESS, data);
     }
 
-    @RequestMapping("/deleteGoodsByGoodsId")
-    public Msg deleteGoodsByGoodsId(@RequestBody Map<String, String> params) {
-        Integer goodsId = Integer.valueOf(params.get(Constant.GOODS_ID));
+    @DeleteMapping(value = "/delete/{goodsId}")
+    public Msg deleteGoodsByGoodsId(@PathVariable Integer goodsId) {
+//        Integer goodsId = Integer.valueOf(params.get(Constant.GOODS_ID));
         logger.info("deleteGoodsWithGoodsId = " + goodsId);
         goodsService.deleteGoodsByGoodsId(goodsId);
         return MsgUtil.makeMsg(MsgCode.DELETE_SUCCESS);
     }
 
-    @RequestMapping("/getGoodsByGoodsId")
-    public Msg getGoodsByGoodsId(@RequestBody Map<String, String> params) {
+    @GetMapping(value = "/{goodsId}")
+    public Msg getGoodsByGoodsId(@PathVariable Integer goodsId) {
         try {
-            Integer goodsId = Integer.valueOf(params.get(Constant.GOODS_ID));
+//            Integer goodsId = Integer.valueOf(params.get(Constant.GOODS_ID));
             logger.info("getGoodsByGoodsId = " + goodsId);
             Goods goods = goodsService.getGoodsByGoodsId(goodsId);
             if (goods.getGoodsType() < 0) {
@@ -75,9 +74,24 @@ public class GoodsController {
         }
     }
 
-    @RequestMapping("/getGoodsByName")
-    public Msg getGoodsByName(@RequestBody Map<String, String> params) {
-        String name = params.get(Constant.NAME);
+//    @GetMapping
+//    public void test1(){
+//        System.out.println("test1");
+//    }
+//
+//    @GetMapping(value="/{id}/{a}")
+//    public void test2(@PathVariable Integer id,@PathVariable Integer a){
+//        System.out.println("test"+id+a);
+//    }
+//
+//    @GetMapping(value="/test/{id}")
+//    public void test3(@PathVariable Integer id){
+//        System.out.println("test"+id);
+//    }
+
+    @GetMapping(value="/search/{name}")
+    public Msg getGoodsByName(@PathVariable String name) {
+//        String name = params.get(Constant.NAME);
         logger.info("getGoodsByName = " + name);
         List<Goods> goods = goodsService.getGoodsByName(name);
         JSONObject data = new JSONObject();
@@ -87,12 +101,13 @@ public class GoodsController {
     }
 
 
-    @RequestMapping("/getAllGoods")
-    public Msg getAllGoods(@RequestBody Map<String, String> params) {
+    @GetMapping("/getAllGoods/{pageId}/{pageSize}/{goodsType}")
+    public Msg getAllGoods(@PathVariable("pageId") Integer pageId,
+                           @PathVariable("pageSize") Integer pageSize,@PathVariable("goodsType") Integer goodsType) {
         logger.info("getAllGoods");
-        Integer pageId = Integer.valueOf(params.get(Constant.PAGE_ID));
-        Integer pageSize = Integer.valueOf(params.get(Constant.PAGE_SIZE));
-        Integer goodsType = Integer.valueOf(params.get(Constant.GOODS_TYPE));
+//        Integer pageId = Integer.valueOf(params.get(Constant.PAGE_ID));
+//        Integer pageSize = Integer.valueOf(params.get(Constant.PAGE_SIZE));
+//        Integer goodsType = Integer.valueOf(params.get(Constant.GOODS_TYPE));
 
         Page<Goods> goodsPage = goodsService.getAllGoods(pageId, pageSize, goodsType);
         JSONObject data = new JSONObject();
@@ -102,10 +117,10 @@ public class GoodsController {
         return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
     }
 
-    @RequestMapping("/getPopularGoods")
-    public Msg getPopularGoods(@RequestBody Map<String, String> params) {
+    @GetMapping("/getPopularGoods/{number}")
+    public Msg getPopularGoods(@PathVariable Integer number) {
         logger.info("getPopularGoods");
-        Integer number = Integer.valueOf(params.get(Constant.NUMBER));
+//        Integer number = Integer.valueOf(params.get(Constant.NUMBER));
         JSONObject data = new JSONObject();
         for (int goodsType = -1; goodsType < Constant.NUMBER_OF_TYPE; goodsType++) {
             List<Goods> goods = goodsService.getPopularGoods(number, goodsType);
@@ -119,9 +134,9 @@ public class GoodsController {
         return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
     }
 
-    @RequestMapping("/getRecommendGoods")
-    public Msg getRecommendGoods(@RequestBody Map<String, String> params) {
-        Integer number = Integer.valueOf(params.get(Constant.NUMBER));
+    @GetMapping("/getRecommendGoods/{number}")
+    public Msg getRecommendGoods(@PathVariable Integer number) {
+//        Integer number = Integer.valueOf(params.get(Constant.NUMBER));
         JSONObject user = SessionUtil.getAuth();
         if (user == null) {
             logger.info("getRecommendGoodsInAll" + "number: " + number);
@@ -141,7 +156,7 @@ public class GoodsController {
         }
     }
 
-    @RequestMapping("/editGoods")
+    @PostMapping("/editGoods")
     public Msg editGoods(@RequestBody Goods goods) {
         logger.info("editGoods");
         Goods goods1 = goodsService.editGoods(goods);
@@ -149,7 +164,7 @@ public class GoodsController {
         return MsgUtil.makeMsg(MsgCode.EDIT_SUCCESS, data);
     }
 
-    @RequestMapping("/addAuction")
+    @PutMapping("/addAuction")
     public Msg addAuction(@RequestBody Map<String, String> params) {
         logger.info("addAuction");
         Auction auction = new Auction();
@@ -170,15 +185,15 @@ public class GoodsController {
         return MsgUtil.makeMsg(MsgCode.ADD_SUCCESS, data);
     }
 
-    @RequestMapping("/deleteAuctionByAuctionId")
-    public Msg deleteAuctionByAuctionId(@RequestBody Map<String, String> params) {
-        Integer auctionId = Integer.valueOf(params.get("auctionId"));
+    @DeleteMapping("/deleteAuctionByAuctionId/{auctionId}")
+    public Msg deleteAuctionByAuctionId(@PathVariable Integer auctionId) {
+//        Integer auctionId = Integer.valueOf(params.get("auctionId"));
         logger.info("deleteAuctionByAuctionId");
         goodsService.deleteAuctionByAuctionId(auctionId);
         return MsgUtil.makeMsg(MsgCode.DELETE_SUCCESS);
     }
 
-    @RequestMapping("/getAllAuctions")
+    @GetMapping("/getAllAuctions")
     public Msg getAllAuctions() throws ParseException {
         logger.info("getAllAuctions");
         List<Auction> auctions = goodsService.getAllAuctions();
@@ -200,10 +215,10 @@ public class GoodsController {
         return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
     }
 
-    @RequestMapping("/getAuctionByAuctionId")
-    public Msg getAuctionByAuctionId(@RequestBody Map<String, String> params) {
+    @GetMapping("/getAuctionByAuctionId/{AuctionId}")
+    public Msg getAuctionByAuctionId(@PathVariable Integer AuctionId) {
         try {
-            Integer AuctionId = Integer.valueOf(params.get(Constant.AUCTION_ID));
+//            Integer AuctionId = Integer.valueOf(params.get(Constant.AUCTION_ID));
             logger.info("getAuctionByAuctionsId = " + AuctionId);
             Auction auction = goodsService.getAuctionByAuctionId(AuctionId);
             if(auction == null){
@@ -230,12 +245,12 @@ public class GoodsController {
         if(auction.getBestOffer().equals(offer)) {
             return MsgUtil.makeMsg(MsgCode.EDIT_SUCCESS);
         }
-        else {
+//        else {
             return MsgUtil.makeMsg(MsgCode.EDIT_ERROR);
-        }
+//        }
     }
 
-    @RequestMapping("/editAuction")
+    @PostMapping("/editAuction")
     public Msg editAuction(@RequestBody Map<String, String> params) {
         logger.info("editAuction");
         Auction auction = new Auction();
