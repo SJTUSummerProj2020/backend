@@ -40,6 +40,9 @@ public class OrderController {
         Order order = new Order();
 
         JSONObject user = SessionUtil.getAuth();
+        if(user == null){
+            return MsgUtil.makeMsg(MsgCode.ADD_ERROR, MsgUtil.BUY_ERROR_MSG);
+        }
         Integer userId = user.getInt(Constant.USER_ID);
         Integer number = Integer.valueOf(params.get("number"));
         Integer detailId = Integer.valueOf(params.get("detailId"));

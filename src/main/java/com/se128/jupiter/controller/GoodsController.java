@@ -234,7 +234,7 @@ public class GoodsController {
 //        }
     }
 
-    @RequestMapping("/updateAuction")
+    @PostMapping("/updateAuction")
     public Msg updateAuction(@RequestBody Map<String, String> params) {
         Integer AuctionId = Integer.valueOf(params.get(Constant.AUCTION_ID));
         Double offer = Double.valueOf(params.get(Constant.OFFER));
