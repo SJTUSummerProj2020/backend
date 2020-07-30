@@ -67,8 +67,6 @@ public class GoodsController {
             }
             JSONObject data = JSONObject.fromObject(goods);
             return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
-        } catch (NumberFormatException e) {
-            return MsgUtil.makeMsg(MsgCode.DATA_ERROR);
         } catch (NullPointerException e) {
             return MsgUtil.makeMsg(MsgCode.DATA_ERROR, "No such goodsId");
         }
@@ -217,21 +215,13 @@ public class GoodsController {
 
     @GetMapping("/getAuctionByAuctionId/{AuctionId}")
     public Msg getAuctionByAuctionId(@PathVariable Integer AuctionId) {
-        try {
-//            Integer AuctionId = Integer.valueOf(params.get(Constant.AUCTION_ID));
-            logger.info("getAuctionByAuctionsId = " + AuctionId);
-            Auction auction = goodsService.getAuctionByAuctionId(AuctionId);
-            if(auction == null){
-                return MsgUtil.makeMsg(MsgCode.DATA_ERROR, "No such auctionId");
-            }
-            JSONObject data = JSONObject.fromObject(auction);
-            return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
-        } catch (NumberFormatException e) {
-            return MsgUtil.makeMsg(MsgCode.DATA_ERROR);
+        logger.info("getAuctionByAuctionsId = " + AuctionId);
+        Auction auction = goodsService.getAuctionByAuctionId(AuctionId);
+        if(auction == null){
+            return MsgUtil.makeMsg(MsgCode.DATA_ERROR, "No such auctionId");
         }
-//        catch (NullPointerException e) {
-//            return MsgUtil.makeMsg(MsgCode.DATA_ERROR, "No such auctionId");
-//        }
+        JSONObject data = JSONObject.fromObject(auction);
+        return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
     }
 
     @PostMapping("/updateAuction")
@@ -248,9 +238,7 @@ public class GoodsController {
         if(auction.getBestOffer().equals(offer)) {
             return MsgUtil.makeMsg(MsgCode.EDIT_SUCCESS);
         }
-//        else {
-            return MsgUtil.makeMsg(MsgCode.EDIT_ERROR);
-//        }
+        return MsgUtil.makeMsg(MsgCode.EDIT_ERROR);
     }
 
     @PostMapping("/editAuction")

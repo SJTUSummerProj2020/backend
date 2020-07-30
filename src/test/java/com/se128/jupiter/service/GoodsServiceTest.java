@@ -102,15 +102,16 @@ class GoodsServiceTest {
     @Test
     void getGoodsByName() {
         Integer goodsId = 1;
-        String name = "test";
-        Goods goods =  new Goods();
+        String name = "test test1";
+        Goods goods = new Goods();
         goods.setGoodsId(goodsId);
         goods.setName(name);
         List<Goods> goodsList = new LinkedList<>();
         goodsList.add(goods);
         goodsList.add(goods);
 
-        when(goodsDao.getGoodsByName(name)).thenReturn(goodsList);
+        when(goodsDao.getGoodsByName("test")).thenReturn(goodsList);
+        when(goodsDao.getGoodsByName("test1")).thenReturn(goodsList);
         assertEquals(goodsList, goodsService.getGoodsByName(name));
     }
 

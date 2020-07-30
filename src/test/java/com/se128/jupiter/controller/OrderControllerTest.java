@@ -63,6 +63,7 @@ class OrderControllerTest {
     @Transactional
     @Rollback(value = true)
     void addOrder() {
+        // normal situation
         try{
             loginWithAdmin();
             String userId = "1";
@@ -84,9 +85,32 @@ class OrderControllerTest {
         } catch (Exception e){
             e.printStackTrace();
         }
+        // no supply
+        try{
+            loginWithAdmin();
+            String userId = "1";
+            String detailId = "1895";
+            String number = "2";
+            JSONObject param = new JSONObject();
+            param.put("userId", userId);
+            param.put("detailId", detailId);
+            param.put("number", number);
+            String responseString = mockMvc.perform(MockMvcRequestBuilders
+                    .put("/order/addOrder")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content(JSON.toJSONString(param))
+                    .session(session)
+                    .accept(MediaType.APPLICATION_JSON)
+            ).andExpect(MockMvcResultMatchers.status().isOk())
+                    .andDo(MockMvcResultHandlers.print())
+                    .andReturn().getResponse().getContentAsString();
+        } catch (Exception e){
+            e.printStackTrace();
+        }
+        // before login
         try{
             String userId = "1";
-            String detailId = "1919";
+            String detailId = "1895";
             String number = "2";
             JSONObject param = new JSONObject();
             param.put("userId", userId);

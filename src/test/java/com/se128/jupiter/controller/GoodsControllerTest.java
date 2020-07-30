@@ -7,6 +7,7 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
+import static org.junit.jupiter.api.Assertions.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMockMvc;
 import org.springframework.boot.test.context.SpringBootTest;
@@ -427,6 +428,30 @@ class GoodsControllerTest {
     @Transactional
     @Rollback(value = true)
     void updateAuction() {
+        // before login
+        try{
+            Integer userId = 1;
+            Integer auctionId = 1;
+            Double offer = 10.0;
+            JSONObject param = new JSONObject();
+            param.put("userId", userId);
+            param.put("auctionId", auctionId);
+            param.put("offer", offer);
+            String responseString = mockMvc.perform(MockMvcRequestBuilders
+                    .post("/goods/updateAuction")
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content(param.toString())
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
+            ).andExpect(MockMvcResultMatchers.status().isOk())
+                    .andDo(MockMvcResultHandlers.print())
+                    .andReturn().getResponse().getContentAsString();
+            JSONObject resp = JSONObject.fromObject(responseString);
+            assertEquals(-1, resp.getInt("status"));
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        // after login
         try {
             loginWithAdmin();
             Integer userId = 1;
@@ -464,32 +489,22 @@ class GoodsControllerTest {
 
     @Test
     void getRecommendGoods() {
+        // user = null
         try {
-            // in all
             String responseString = mockMvc.perform(MockMvcRequestBuilders
                     .get("/goods/getRecommendGoods/10")
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
                     .andReturn().getResponse().getContentAsString();
-            // personalized
-//            responseString = mockMvc.perform(MockMvcRequestBuilders
-//                    .post("/goods/getRecommendGoods/10")
-//                    .accept(MediaType.APPLICATION_JSON_UTF8)
-//            ).andExpect(MockMvcResultMatchers.status().isOk())
-//                    .andDo(MockMvcResultHandlers.print())
-//                    .andReturn().getResponse().getContentAsString();
         } catch (Exception e) {
             e.printStackTrace();
         }
+        // user != null
         try {
             loginWithAdmin();
-            JSONObject param = new JSONObject();
-            // getAllGoods
             mockMvc.perform(MockMvcRequestBuilders
                     .get("/goods/getRecommendGoods/10")
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(param.toString())
                     .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
