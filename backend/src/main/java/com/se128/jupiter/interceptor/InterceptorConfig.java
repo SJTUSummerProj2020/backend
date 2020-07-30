@@ -40,6 +40,7 @@ public class InterceptorConfig implements WebMvcConfigurer {
                 .addPathPatterns("/deleteGoodsByGoodsId")
                 .addPathPatterns("/editGoods")
                 .addPathPatterns("/addAuction")
+                .addPathPatterns("/addGoods")
                 .addPathPatterns("/deleteAuctionByAuctionId")
                 .addPathPatterns("/updateAuction")
                 .addPathPatterns("/editAuction")
