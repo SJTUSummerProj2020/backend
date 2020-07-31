@@ -25,10 +25,10 @@ public class User {
     private String phone;
     private Integer userType;
 
-    @JsonIgnore
-    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
-    @JoinColumn(name = "user_id")
-    private List<Order> orders;
+//    @JsonIgnore
+//    @OneToMany(cascade = {CascadeType.ALL}, fetch = FetchType.LAZY)
+//    @JoinColumn(name = "user_id")
+//    private List<Order> orders;
 
     private Integer buy0;
     private Integer buy1;
@@ -47,9 +47,9 @@ public class User {
         return this.userType;
     }
 
-    public List<Order> getOrders() {
-        return this.orders;
-    }
+//    public List<Order> getOrders() {
+//        return this.orders;
+//    }
 
     public String getPassword() {
         return this.password;
@@ -59,9 +59,9 @@ public class User {
         return phone;
     }
 
-    public void setOrders(List<Order> orders) {
-        this.orders = orders;
-    }
+//    public void setOrders(List<Order> orders) {
+//        this.orders = orders;
+//    }
 
     public void setPassword(String password) {
         this.password = password;
