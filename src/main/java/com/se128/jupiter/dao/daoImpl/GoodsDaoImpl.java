@@ -38,6 +38,7 @@ public class GoodsDaoImpl implements GoodsDao {
             detail = detailRepository.getDetailByGoodsId(goodsId);
             goods.setDetail(detail.getDetail());
         }catch(Exception e){
+            return null;
         }
         return goods;
     }
@@ -93,8 +94,7 @@ public class GoodsDaoImpl implements GoodsDao {
             goods.setGoodsType(-1);
             List<GoodsDetail> goodsDetails = goods.getGoodsDetails();
             goodsRepository.saveAndFlush(goods);
-            for(GoodsDetail item : goodsDetails)
-            {
+            for(GoodsDetail item : goodsDetails) {
                 item.setSurplus(-1);
             }
             goodsDetailRepository.saveAll(goodsDetails);

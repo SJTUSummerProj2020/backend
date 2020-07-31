@@ -119,4 +119,12 @@ class UserServiceTest {
         when(userDao.changeUserStatusByUserId(userId)).thenReturn(user);
         assertEquals(user, userService.changeUserStatusByUserId(userId));
     }
+
+    @Test
+    void editUser(){
+        User user = new User();
+
+        when(userDao.editUser(user)).thenReturn(user);
+        assertEquals(user, userService.editUser(user));
+    }
 }

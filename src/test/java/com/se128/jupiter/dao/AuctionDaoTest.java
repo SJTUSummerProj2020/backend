@@ -17,6 +17,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.*;
+import static org.mockito.Mockito.doNothing;
 import static org.mockito.Mockito.when;
 
 @RunWith(SpringRunner.class)
@@ -71,5 +72,23 @@ class AuctionDaoTest {
 
         when(auctionRepository.saveAndFlush(auction)).thenReturn(auction);
         assertEquals(auction, auctionDao.editAuction(auction));
+    }
+
+    @Test
+    void addAuction(){
+        Auction auction = new Auction();
+
+        when(auctionRepository.saveAndFlush(auction)).thenReturn(auction);
+        assertEquals(auction, auctionDao.addAuction(auction));
+    }
+
+    @Test
+    void deleteAuctionByAuctionId(){
+        Auction auction = new Auction();
+        Integer auctionId = 1;
+
+        when(auctionRepository.getAuctionByAuctionId(auctionId)).thenReturn(auction);
+        when(auctionRepository.saveAndFlush(auction)).thenReturn(auction);
+        auctionDao.deleteAuctionByAuctionId(auctionId);
     }
 }
