@@ -226,17 +226,22 @@ public class GoodsController {
 
     @PostMapping("/updateAuction")
     public Msg updateAuction(@RequestBody Map<String, String> params) {
-        Integer AuctionId = Integer.valueOf(params.get(Constant.AUCTION_ID));
+        Integer auctionId = Integer.valueOf(params.get(Constant.AUCTION_ID));
         Double offer = Double.valueOf(params.get(Constant.OFFER));
         JSONObject user = SessionUtil.getAuth();
         if(user == null){
-            return MsgUtil.makeMsg(MsgCode.EDIT_ERROR);
+            return MsgUtil.makeMsg(MsgCode.LOGIN_USER_ERROR);
         }
         Integer userId = user.getInt(Constant.USER_ID);
-        logger.info("updateAuction auctionsId = " + AuctionId+ " userId = " + userId);
-        Auction auction = goodsService.updateAuction(AuctionId,userId,offer);
-        if(auction.getBestOffer().equals(offer)) {
-            return MsgUtil.makeMsg(MsgCode.EDIT_SUCCESS);
+        logger.info("updateAuction auctionsId = " + auctionId+ " userId = " + userId);
+        Auction auction1 = goodsService.getAuctionByAuctionId(auctionId);
+        Double old = auction1.getBestOffer();
+        if(old<offer)
+        {
+            Auction auction = goodsService.updateAuction(auctionId,userId,offer);
+            if(auction.getBestOffer().equals(offer)) {
+                return MsgUtil.makeMsg(MsgCode.EDIT_SUCCESS);
+            }
         }
         return MsgUtil.makeMsg(MsgCode.EDIT_ERROR);
     }

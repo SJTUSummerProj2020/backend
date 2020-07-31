@@ -141,7 +141,6 @@ public class UserControllerTest {
 
     @Test
     @Transactional
-    @Rollback(value = true)
     public void register() {
         try{
             // 测试重复用户名测试
@@ -177,7 +176,7 @@ public class UserControllerTest {
                     .andDo(MockMvcResultHandlers.print())
                     .andReturn().getResponse().getContentAsString();
             respond = (JSONObject) JSON.parseObject(responseString);
-            assertEquals("新注册用户失败", 0, respond.get("status"));
+            assertEquals("新注册用户成功", 0, respond.get("status"));
             System.out.println(responseString);
 
         } catch (Exception e){
