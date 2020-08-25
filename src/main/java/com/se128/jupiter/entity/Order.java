@@ -12,6 +12,11 @@ import java.sql.Timestamp;
 @JsonIgnoreProperties(value = {"handler", "hibernateLazyInitializer", "fieldHandler"})
 public class Order {
 
+    private String orderStatus = "0";
+    private Timestamp finishDate;
+    private Timestamp deleteDate;
+    private Timestamp createDate;
+    private double amount;
     @Id
     @Column(name = "order_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)

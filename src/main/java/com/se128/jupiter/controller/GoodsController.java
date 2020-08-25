@@ -74,21 +74,6 @@ public class GoodsController {
         }
     }
 
-//    @GetMapping
-//    public void test1(){
-//        System.out.println("test1");
-//    }
-//
-//    @GetMapping(value="/{id}/{a}")
-//    public void test2(@PathVariable Integer id,@PathVariable Integer a){
-//        System.out.println("test"+id+a);
-//    }
-//
-//    @GetMapping(value="/test/{id}")
-//    public void test3(@PathVariable Integer id){
-//        System.out.println("test"+id);
-//    }
-
     @GetMapping(value="/search/{name}")
     public Msg getGoodsByName(@PathVariable String name) {
 //        String name = params.get(Constant.NAME);

@@ -107,6 +107,30 @@ public class GoodsServiceImpl implements GoodsService {
     }
 
     @Override
+    public List<Goods> getRecommendGoodsByUserId(Integer userId, Integer number) {
+        User user = userDao.getUserByUserId(userId);
+        int[] data = new int[4];
+        data[0] = user.getBuy0();
+        data[1] = user.getBuy1();
+        data[2] = user.getBuy2();
+        data[3] = user.getBuy3();
+        int max = 0; int goodsType=0;
+        for(int i = 0; i < data.length; i++) {
+            if(data[i]>max)
+            {
+                max = data[i];
+                goodsType = i;
+            }
+        }
+        return goodsDao.getRecommendGoodsByGoodsType(goodsType,number);
+    }
+
+    @Override
+    public List<Goods> getRecommendGoodsInAll(Integer number) {
+        return goodsDao.getRecommendGoodsInAll(number);
+    }
+
+    @Override
     public List<Auction> getAllAuctions() {
         return auctionDao.getAllAuctions();
     }
@@ -126,29 +150,9 @@ public class GoodsServiceImpl implements GoodsService {
         }
         return auctionDao.saveAuction(auction);
     }
-
     @Override
-    public List<Goods> getRecommendGoodsByUserId(Integer userId, Integer number) {
-        User user = userDao.getUserByUserId(userId);
-        int[] data = new int[4];
-        data[0] = user.getBuy0();
-        data[1] = user.getBuy1();
-        data[2] = user.getBuy2();
-        data[3] = user.getBuy3();
-        int max = 0; int goodsType=0;
-        for(int i = 0; i < data.length; i++) {
-           if(data[i]>max)
-           {
-               max = data[i];
-               goodsType = i;
-           }
-        }
-        return goodsDao.getRecommendGoodsByGoodsType(goodsType,number);
-    }
-
-    @Override
-    public List<Goods> getRecommendGoodsInAll(Integer number) {
-        return goodsDao.getRecommendGoodsInAll(number);
+    public void deleteAuctionByAuctionId(Integer auctionId) {
+        auctionDao.deleteAuctionByAuctionId(auctionId);
     }
 
     @Override
@@ -158,11 +162,6 @@ public class GoodsServiceImpl implements GoodsService {
         auction.setGoods(goods);
         auction.setGoodsDetail(detail);
         return auctionDao.addAuction(auction);
-    }
-
-    @Override
-    public void deleteAuctionByAuctionId(Integer auctionId) {
-        auctionDao.deleteAuctionByAuctionId(auctionId);
     }
 
     @Override

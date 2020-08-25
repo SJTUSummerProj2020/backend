@@ -16,7 +16,7 @@ public class Constant {
     public static final String PAGE_SIZE = "pageSize";
     public static final String SIZE = "size";
     public static final String NUMBER = "number";
-    public static final Integer NUMBER_OF_TYPE = 4;
+    public static final Integer NUMBER_OF_TYPE = 6;
     public static final String AUCTION_ID = "auctionId";
     public static final String OFFER = "offer";
     public static final String GOODS = "goods";
