@@ -49,7 +49,7 @@ class OrderControllerTest {
         userInfo.put("username", "root");
         userInfo.put("password", "root");
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/login")
+                .post("/sso/login")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JSON.toJSONString(userInfo))
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -69,7 +69,7 @@ class OrderControllerTest {
             param.put("detailId", detailId);
             param.put("number", number);
             String responseString = mockMvc.perform(MockMvcRequestBuilders
-                    .post("/addOrder")
+                    .put("/order/addOrder")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(JSON.toJSONString(param))
                     .session(session)
@@ -89,7 +89,7 @@ class OrderControllerTest {
             param.put("detailId", detailId);
             param.put("number", number);
             String responseString = mockMvc.perform(MockMvcRequestBuilders
-                    .post("/addOrder")
+                    .put("/order/addOrder")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(JSON.toJSONString(param))
                     .accept(MediaType.APPLICATION_JSON)
@@ -106,7 +106,7 @@ class OrderControllerTest {
         try{
             loginWithAdmin();
             String responseString = mockMvc.perform(MockMvcRequestBuilders
-                    .post("/getAllOrders")
+                    .get("/order/getAllOrders")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content("")
                     .accept(MediaType.APPLICATION_JSON)

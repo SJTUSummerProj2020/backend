@@ -67,9 +67,11 @@ public class GoodsController {
             }
             JSONObject data = JSONObject.fromObject(goods);
             return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
-        } catch (NumberFormatException e) {
-            return MsgUtil.makeMsg(MsgCode.DATA_ERROR);
-        } catch (NullPointerException e) {
+        }
+//        catch (NumberFormatException e) {
+//            return MsgUtil.makeMsg(MsgCode.DATA_ERROR);
+//        }
+        catch (NullPointerException e) {
             return MsgUtil.makeMsg(MsgCode.DATA_ERROR, "No such goodsId");
         }
     }
@@ -211,7 +213,8 @@ public class GoodsController {
             }
             JSONObject data = JSONObject.fromObject(auction);
             return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             return MsgUtil.makeMsg(MsgCode.DATA_ERROR);
         }
 //        catch (NullPointerException e) {

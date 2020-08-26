@@ -72,8 +72,20 @@ public class UserController {
     public Msg getUserById(@PathVariable Integer userId) {
 
 //        Integer userId = Integer.valueOf(params.get(Constant.USER_ID));
-        logger.info("getUserById = " + userId);
-        User user = userService.getUserByUserId(userId);
+        JSONObject auth = SessionUtil.getAuth();
+        Integer id = auth.getInt(Constant.USER_ID);
+        Integer userType = auth.getInt(Constant.USER_TYPE);
+        User user = new User();
+        if(userType==0)
+        {
+            logger.info("getUserById = " + userId);
+            user = userService.getUserByUserId(userId);
+        }
+        else
+        {
+            logger.info("getUserById = " + id);
+            user = userService.getUserByUserId(id);
+        }
         JSONObject data = JSONObject.fromObject(user);
         return MsgUtil.makeMsg(MsgCode.SUCCESS, data);
     }
