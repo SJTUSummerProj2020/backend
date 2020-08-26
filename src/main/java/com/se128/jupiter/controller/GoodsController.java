@@ -67,27 +67,14 @@ public class GoodsController {
             }
             JSONObject data = JSONObject.fromObject(goods);
             return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
-        } catch (NumberFormatException e) {
-            return MsgUtil.makeMsg(MsgCode.DATA_ERROR);
-        } catch (NullPointerException e) {
+        }
+//        catch (NumberFormatException e) {
+//            return MsgUtil.makeMsg(MsgCode.DATA_ERROR);
+//        }
+        catch (NullPointerException e) {
             return MsgUtil.makeMsg(MsgCode.DATA_ERROR, "No such goodsId");
         }
     }
-
-//    @GetMapping
-//    public void test1(){
-//        System.out.println("test1");
-//    }
-//
-//    @GetMapping(value="/{id}/{a}")
-//    public void test2(@PathVariable Integer id,@PathVariable Integer a){
-//        System.out.println("test"+id+a);
-//    }
-//
-//    @GetMapping(value="/test/{id}")
-//    public void test3(@PathVariable Integer id){
-//        System.out.println("test"+id);
-//    }
 
     @GetMapping(value="/search/{name}")
     public Msg getGoodsByName(@PathVariable String name) {
@@ -226,7 +213,8 @@ public class GoodsController {
             }
             JSONObject data = JSONObject.fromObject(auction);
             return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
-        } catch (NumberFormatException e) {
+        }
+        catch (NumberFormatException e) {
             return MsgUtil.makeMsg(MsgCode.DATA_ERROR);
         }
 //        catch (NullPointerException e) {

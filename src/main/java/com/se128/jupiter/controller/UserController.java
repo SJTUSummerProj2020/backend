@@ -21,7 +21,6 @@ import java.util.Map;
 
 @RestController
 @Api(value="用户管理类")
-@RequestMapping("/user")
 public class UserController {
 
     private final UserService userService;
@@ -32,7 +31,7 @@ public class UserController {
         this.userService = userService;
     }
 
-    @PostMapping("/register")
+    @PostMapping("/user/register")
     public Msg register(@RequestBody User user) {
         logger.info("register");
         user.setUserType(Constant.Customer);
@@ -49,7 +48,7 @@ public class UserController {
         }
     }
 
-    @PostMapping("/changeUserStatusByUserId")
+    @PostMapping("/user/changeUserStatusByUserId")
     public Msg changeUserStatusByUserId(@RequestBody Map<String, String> params) {
         Integer userId = Integer.valueOf(params.get(Constant.USER_ID));
         logger.info("changeUserStatusByUserId = " + userId);
@@ -61,7 +60,7 @@ public class UserController {
         }
     }
 
-    @RequestMapping("/editUser")
+    @RequestMapping("/user/editUser")
     public Msg editUser(@RequestBody User user) {
         logger.info("editUser");
         User user1 = userService.editUser(user);
@@ -69,17 +68,29 @@ public class UserController {
         return MsgUtil.makeMsg(MsgCode.EDIT_SUCCESS, data);
     }
 
-    @GetMapping("/getUserById/{userId}")
+    @GetMapping("/user/getUserById/{userId}")
     public Msg getUserById(@PathVariable Integer userId) {
 
 //        Integer userId = Integer.valueOf(params.get(Constant.USER_ID));
-        logger.info("getUserById = " + userId);
-        User user = userService.getUserByUserId(userId);
+        JSONObject auth = SessionUtil.getAuth();
+        Integer id = auth.getInt(Constant.USER_ID);
+        Integer userType = auth.getInt(Constant.USER_TYPE);
+        User user = new User();
+        if(userType==0)
+        {
+            logger.info("getUserById = " + userId);
+            user = userService.getUserByUserId(userId);
+        }
+        else
+        {
+            logger.info("getUserById = " + id);
+            user = userService.getUserByUserId(id);
+        }
         JSONObject data = JSONObject.fromObject(user);
         return MsgUtil.makeMsg(MsgCode.SUCCESS, data);
     }
 
-    @PostMapping("/login")
+    @PostMapping("/sso/login")
     public Msg login(@RequestBody Map<String, String> params) {
         logger.info("login");
         String username = params.get(Constant.USERNAME);
@@ -107,7 +118,7 @@ public class UserController {
 
     }
 
-    @PostMapping("/logout")
+    @PostMapping("/sso/logout")
     public Msg logout() {
         logger.info("logout");
         Boolean status = SessionUtil.removeSession();
@@ -117,7 +128,7 @@ public class UserController {
         return MsgUtil.makeMsg(MsgCode.ERROR, MsgUtil.LOGOUT_ERR_MSG);
     }
 
-    @GetMapping("/checkSession")
+    @GetMapping("/sso/checkSession")
     public Msg checkSession() {
         logger.info("checkSession");
         JSONObject auth = SessionUtil.getAuth();
@@ -141,7 +152,8 @@ public class UserController {
 //        return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
 //    }
 
-    @GetMapping("/getAllUsers")
+
+    @RequestMapping("/user/getAllUsers")
     public Msg getAllUsers() {
         logger.info("getAllUsers");
         List<User> users = userService.getAllUsers();

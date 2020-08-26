@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,7 +49,7 @@ class OrderControllerTest {
         userInfo.put("username", "root");
         userInfo.put("password", "root");
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/user/login")
+                .post("/sso/login")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JSON.toJSONString(userInfo))
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -60,8 +58,6 @@ class OrderControllerTest {
     }
 
     @Test
-    @Transactional
-    @Rollback(value = true)
     void addOrder() {
         try{
             loginWithAdmin();
@@ -111,6 +107,8 @@ class OrderControllerTest {
             loginWithAdmin();
             String responseString = mockMvc.perform(MockMvcRequestBuilders
                     .get("/order/getAllOrders")
+                    .contentType(MediaType.APPLICATION_JSON)
+                    .content("")
                     .accept(MediaType.APPLICATION_JSON)
                     .session(session)
             ).andExpect(MockMvcResultMatchers.status().isOk())
