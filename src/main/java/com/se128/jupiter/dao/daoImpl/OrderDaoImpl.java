@@ -54,6 +54,7 @@ public class OrderDaoImpl implements OrderDao {
                 case 1:user.setBuy1(user.getBuy1()+1);break;
                 case 2:user.setBuy2(user.getBuy2()+1);break;
                 case 3:user.setBuy3(user.getBuy3()+1);break;
+                default: break;
             }
             userRepository.saveAndFlush(user);
             return orderRepository.saveAndFlush(order);
