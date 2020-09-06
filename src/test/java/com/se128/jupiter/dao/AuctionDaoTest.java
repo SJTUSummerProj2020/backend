@@ -72,4 +72,10 @@ class AuctionDaoTest {
         when(auctionRepository.saveAndFlush(auction)).thenReturn(auction);
         assertEquals(auction, auctionDao.editAuction(auction));
     }
+
+    @Test
+    void deleteAuctionByAuctionId() {
+        Integer auctionId = 1;
+        auctionDao.deleteAuctionByAuctionId(auctionId);
+    }
 }
