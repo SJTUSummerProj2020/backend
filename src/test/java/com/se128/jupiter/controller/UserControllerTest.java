@@ -204,6 +204,7 @@ public class UserControllerTest {
             password = "test";
             param.put("username", username);
             param.put("password", password);
+            param.put("nickname", "test");
             responseString = mockMvc.perform(MockMvcRequestBuilders
                     .post("/user/register")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)

@@ -65,6 +65,7 @@ class GoodsControllerTest {
         try {
             mockMvc.perform(MockMvcRequestBuilders
                     .get("/goods/2734")
+                    .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -76,6 +77,7 @@ class GoodsControllerTest {
         try {
             mockMvc.perform(MockMvcRequestBuilders
                     .get("/goods/1")
+                    .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -87,6 +89,7 @@ class GoodsControllerTest {
         try {
             mockMvc.perform(MockMvcRequestBuilders
                     .get("/goods/200")
+                    .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -463,6 +466,28 @@ class GoodsControllerTest {
     @Transactional
     @Rollback(value = true)
     void updateAuction() {
+        // without login
+        try{
+            Integer userId = 1;
+            Integer auctionId = 2;
+            double offer = 10.0;
+            JSONObject param = new JSONObject();
+            param.put("userId", userId);
+            param.put("auctionId", auctionId);
+            param.put("offer", offer);
+            // offer is lower than bestOffer
+            String responseString = mockMvc.perform(MockMvcRequestBuilders
+                    .post("/goods/updateAuction")
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content(param.toString())
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
+            ).andExpect(MockMvcResultMatchers.status().isOk())
+                    .andDo(MockMvcResultHandlers.print())
+                    .andReturn().getResponse().getContentAsString();
+            offer = 250.0;
+        } catch (Exception e){
+            e.printStackTrace();
+        }
         try {
             loginWithAdmin();
             Integer userId = 1;
