@@ -19,6 +19,9 @@ public class User {
     @Column(name = "user_name")
     private String username;
 
+    @Column(name = "nick_name")
+    private String nickname;
+
     @Column(name = "password")
     private String password;
 
@@ -113,5 +116,13 @@ public class User {
 
     public void setBuy3(Integer buy3) {
         this.buy3 = buy3;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }

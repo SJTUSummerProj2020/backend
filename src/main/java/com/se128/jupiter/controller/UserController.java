@@ -1,6 +1,5 @@
 package com.se128.jupiter.controller;
 
-import com.se128.jupiter.entity.Order;
 import com.se128.jupiter.entity.User;
 import com.se128.jupiter.service.UserService;
 import com.se128.jupiter.util.constant.Constant;
