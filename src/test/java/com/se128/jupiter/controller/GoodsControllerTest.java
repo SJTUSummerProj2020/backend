@@ -63,14 +63,8 @@ class GoodsControllerTest {
     void getGoodsByGoodsId() {
         //OK
         try {
-            String goodsId = "513";
-            JSONObject param = new JSONObject();
-            param.put("goodsId", goodsId);
-
             mockMvc.perform(MockMvcRequestBuilders
-                    .get("/goods/513")
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(JSON.toJSONString(param))
+                    .get("/goods/2734")
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -80,14 +74,8 @@ class GoodsControllerTest {
         }
         // 下架 goodsType<0
         try {
-            String goodsId = "540";
-            JSONObject param = new JSONObject();
-            param.put("goodsId", goodsId);
-
             mockMvc.perform(MockMvcRequestBuilders
-                    .get("/goods/540")
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(param.toString())
+                    .get("/goods/1")
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -97,14 +85,8 @@ class GoodsControllerTest {
         }
         //No such goodsId
         try {
-            String goodsId = "200";
-            JSONObject param = new JSONObject();
-            param.put("goodsId", goodsId);
-
             mockMvc.perform(MockMvcRequestBuilders
                     .get("/goods/200")
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content(JSON.toJSONString(param))
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -112,21 +94,6 @@ class GoodsControllerTest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-//        //No goodsId
-//        try {
-//            JSONObject param = new JSONObject();
-//
-//            mockMvc.perform(MockMvcRequestBuilders
-//                    .post("/goods/")
-//                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-//                    .content(param.toString())
-//                    .accept(MediaType.APPLICATION_JSON_UTF8)
-//            ).andExpect(MockMvcResultMatchers.status().isOk())
-//                    .andDo(MockMvcResultHandlers.print())
-//                    .andReturn().getResponse().getContentAsString();
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
     }
 
     @Test
@@ -432,8 +399,6 @@ class GoodsControllerTest {
         try {
             String responseString = mockMvc.perform(MockMvcRequestBuilders
                     .get("/goods/getAllAuctions")
-                    .contentType(MediaType.APPLICATION_JSON_UTF8)
-                    .content("")
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -501,8 +466,8 @@ class GoodsControllerTest {
         try {
             loginWithAdmin();
             Integer userId = 1;
-            Integer auctionId = 1;
-            Double offer = 10.0;
+            Integer auctionId = 2;
+            double offer = 10.0;
             JSONObject param = new JSONObject();
             param.put("userId", userId);
             param.put("auctionId", auctionId);
@@ -524,6 +489,7 @@ class GoodsControllerTest {
                     .post("/goods/updateAuction")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(param.toString())
+                    .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -587,8 +553,8 @@ class GoodsControllerTest {
     void addAuction() {
         try {
             loginWithAdmin();
-            Integer detailId = 11817;
-            Integer goodsId = 2679;
+            Integer detailId = 11970;
+            Integer goodsId = 2734;
             Double startingPrice = 100.0;
             Double addingPrice = 10.0;
             String startTime = "2020-07-16 10:00:00";
@@ -662,11 +628,11 @@ class GoodsControllerTest {
         try {
             loginWithAdmin();
             Integer auctionId = 1;
-            Integer detailId = 11817;
-            Integer goodsId = 2679;
+            Integer detailId = 11970;
+            Integer goodsId = 2734;
             Double startingPrice = 100.0;
             Double addingPrice = 10.0;
-            String startTime = "2020-07-16 10:00:00";
+            String startTime = "2020-10-16 10:00:00";
             Integer duration = 1;
             JSONObject param = new JSONObject();
             param.put("auctionId", auctionId);

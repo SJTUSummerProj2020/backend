@@ -36,6 +36,11 @@ public class Order {
     private Integer sourceId;
     private Integer number;
 
+    @Column(name = "order_status")
+    private Integer orderStatus;
+    public Integer getOrderStatus(){return orderStatus;}
+    public void setOrderStatus(Integer orderStatus){this.orderStatus = orderStatus;}
+
     private Double price;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss", timezone = "GMT+8")
@@ -104,4 +109,5 @@ public class Order {
     public Goods getGoods() {
         return goods;
     }
+
 }

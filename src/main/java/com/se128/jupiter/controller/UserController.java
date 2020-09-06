@@ -38,6 +38,8 @@ public class UserController {
         user.setBuy1(0);
         user.setBuy2(0);
         user.setBuy3(0);
+        user.setBuy4(0);
+        user.setBuy5(0);
         User user1 = userService.addUser(user);
 
         if (user1 != null) {
@@ -80,8 +82,7 @@ public class UserController {
             logger.info("getUserById = " + userId);
             user = userService.getUserByUserId(userId);
         }
-        else
-        {
+        else {
             logger.info("getUserById = " + id);
             user = userService.getUserByUserId(id);
         }
@@ -138,19 +139,6 @@ public class UserController {
             return MsgUtil.makeMsg(MsgCode.SUCCESS, MsgUtil.LOGIN_SUCCESS_MSG, auth);
         }
     }
-
-//    @GetMapping("/getOrdersByUserId/{userId}")
-//    public Msg getOrdersByUserId(@PathVariable Integer userId) {
-//        JSONObject user = SessionUtil.getAuth();
-////        Integer userId = user.getInt(Constant.USER_ID);
-//        List<Order> orders = userService.getOrdersByUserId(userId);
-//
-//        JSONArray orderList = JSONArray.fromObject(orders);
-//        JSONObject data = new JSONObject();
-//        data.put("order", orderList);
-//        return MsgUtil.makeMsg(MsgCode.DATA_SUCCESS, data);
-//    }
-
 
     @RequestMapping("/user/getAllUsers")
     public Msg getAllUsers() {

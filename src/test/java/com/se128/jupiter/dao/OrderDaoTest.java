@@ -75,6 +75,8 @@ class OrderDaoTest {
         user.setBuy1(boughtNum);
         user.setBuy2(boughtNum);
         user.setBuy3(boughtNum);
+        user.setBuy4(boughtNum);
+        user.setBuy5(boughtNum);
         // getSurplus = 1
         goodsDetail.setSurplus(1);
         when(goodsDetailRepository.getGoodsDetailByDetailId(detailId)).thenReturn(goodsDetail);
@@ -83,7 +85,7 @@ class OrderDaoTest {
         when(orderRepository.saveAndFlush(anOrder)).thenReturn(anOrder);
         when(userRepository.getUserByUserId(userId)).thenReturn(user);
         when(userRepository.saveAndFlush(user)).thenReturn(user);
-        for(int i = 0; i<4;++i){
+        for(int i = 0; i<6;++i){
             goodsType = i;
             goods.setGoodsType(goodsType);
             assertEquals(anOrder, orderDao.addOrder(anOrder, detailId));
@@ -103,6 +105,13 @@ class OrderDaoTest {
 
         when(orderRepository.findAll()).thenReturn(orderList);
         assertEquals(orderList, orderDao.getAllOrders());
+    }
 
+    @Test
+    void getOrdersByUserId(){
+        List<Order> orderList = new ArrayList<>();
+
+        when(orderRepository.findOrdersByUserId(1)).thenReturn(orderList);
+        assertEquals(orderList, orderDao.getOrdersByUserId(1));
     }
 }

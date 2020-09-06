@@ -6,6 +6,7 @@ import com.se128.jupiter.dao.OrderDao;
 import com.se128.jupiter.dao.UserDao;
 import com.se128.jupiter.entity.Auction;
 import com.se128.jupiter.entity.Goods;
+import com.se128.jupiter.entity.GoodsDetail;
 import com.se128.jupiter.entity.User;
 import org.junit.jupiter.api.Test;
 import org.junit.runner.RunWith;
@@ -102,7 +103,7 @@ class GoodsServiceTest {
     @Test
     void getGoodsByName() {
         Integer goodsId = 1;
-        String name = "test";
+        String name = "test name";
         Goods goods =  new Goods();
         goods.setGoodsId(goodsId);
         goods.setName(name);
@@ -240,5 +241,34 @@ class GoodsServiceTest {
 
         when(goodsDao.getRecommendGoodsInAll(number)).thenReturn(goodsList);
         assertEquals(goodsList, goodsService.getRecommendGoodsInAll(number));
+    }
+    @Test
+    void deleteAuctionByAuctionId(){
+        doNothing().when(auctionDao).deleteAuctionByAuctionId(1);
+        goodsService.deleteAuctionByAuctionId(1);
+    }
+
+    @Test
+    void addAuction() {
+        Goods goods = new Goods();
+        GoodsDetail goodsDetail = new GoodsDetail();
+        Auction auction = new Auction();
+
+        when(goodsDao.getGoodsByGoodsId(1)).thenReturn(goods);
+        when(goodsDao.getGoodsDetailByDetailId(1)).thenReturn(goodsDetail);
+        when(auctionDao.addAuction(auction)).thenReturn(auction);
+        assertEquals(auction, goodsService.addAuction(auction, 1, 1));
+    }
+
+    @Test
+    void editAuction(){
+        Goods goods = new Goods();
+        GoodsDetail goodsDetail = new GoodsDetail();
+        Auction auction = new Auction();
+
+        when(goodsDao.getGoodsByGoodsId(1)).thenReturn(goods);
+        when(goodsDao.getGoodsDetailByDetailId(1)).thenReturn(goodsDetail);
+        when(auctionDao.editAuction(auction)).thenReturn(auction);
+        assertEquals(auction, goodsService.editAuction(auction, 1, 1));
     }
 }

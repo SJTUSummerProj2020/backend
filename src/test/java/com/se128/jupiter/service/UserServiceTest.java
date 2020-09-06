@@ -73,22 +73,6 @@ class UserServiceTest {
         assertEquals(user, userService.addUser(user));
     }
 
-//    @Test
-//    void getOrdersByUserId() {
-//        Integer userId = 1;
-//        Order anOrder = new Order();
-//       // anOrder.setUserId(userId);
-//        anOrder.setOrderId(1);
-//        anOrder.setPrice(1.0);
-//        anOrder.setNumber(1);
-//        List<Order> orders = new LinkedList<>();
-//        orders.add(anOrder);
-//        orders.add(anOrder);
-//
-//        when(userDao.getOrdersByUserId(userId)).thenReturn(orders);
-//        assertEquals(orders, userService.getOrdersByUserId(userId));
-//    }
-
     @Test
     void getAllUsers() {
         Integer userId = 1;
@@ -118,5 +102,13 @@ class UserServiceTest {
 
         when(userDao.changeUserStatusByUserId(userId)).thenReturn(user);
         assertEquals(user, userService.changeUserStatusByUserId(userId));
+    }
+
+    @Test
+    void editUser(){
+        User user = new User();
+
+        when(userDao.editUser(user)).thenReturn(user);
+        assertEquals(user, userService.editUser(user));
     }
 }

@@ -35,6 +35,7 @@ public class OrderController {
     @PutMapping("/addOrder")
     public Msg addOrder(@RequestBody Map<String, String> params) {
 
+
         logger.info("addOrder");
 
         Order order = new Order();
@@ -53,6 +54,7 @@ public class OrderController {
 
         order.setUserId(userId);
         order.setNumber(number);
+        order.setOrderStatus(0);
 
         Timestamp timestamp = new Timestamp(System.currentTimeMillis());
         order.setTime(timestamp.toString());
@@ -60,11 +62,9 @@ public class OrderController {
         order.setSourceId(54749110);
 
         Order order1 = orderService.addOrder(order, detailId);
-
         if (order1 == null) {
             return MsgUtil.makeMsg(MsgCode.ADD_ERROR, MsgUtil.BUY_ERROR_MSG);
         }
-
         JSONObject data = JSONObject.fromObject(order1);
         return MsgUtil.makeMsg(MsgCode.ADD_SUCCESS, MsgUtil.BUY_SUCCESS_MSG, data);
     }
