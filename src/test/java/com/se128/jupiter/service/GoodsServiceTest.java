@@ -111,7 +111,8 @@ class GoodsServiceTest {
         goodsList.add(goods);
         goodsList.add(goods);
 
-        when(goodsDao.getGoodsByName(name)).thenReturn(goodsList);
+        when(goodsDao.getGoodsByName("test")).thenReturn(goodsList);
+        when(goodsDao.getGoodsByName("name")).thenReturn(goodsList);
         assertEquals(goodsList, goodsService.getGoodsByName(name));
     }
 

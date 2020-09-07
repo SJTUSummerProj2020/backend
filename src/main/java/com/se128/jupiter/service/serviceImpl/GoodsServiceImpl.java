@@ -80,9 +80,6 @@ public class GoodsServiceImpl implements GoodsService {
                 goods.retainAll(someGoods);
             }
         }
-//        HashSet<Goods> tmp = new HashSet<Goods>(goods);
-//        goods.clear();
-//        goods.addAll(tmp);
         return goods;
     }
 
