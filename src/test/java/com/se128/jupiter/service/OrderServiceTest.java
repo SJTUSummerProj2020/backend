@@ -65,10 +65,9 @@ class OrderServiceTest {
 
     @Test
     void getOrdersByUserId(){
-        Integer userId = 1;
-        List<Order> orderList = new ArrayList<>();
+        List<Order> orderList= new ArrayList<>();
 
-        when(orderDao.getOrdersByUserId(userId)).thenReturn(orderList);
-        assertEquals(orderList, orderService.getOrdersByUserId(userId));
+        when(orderDao.getOrdersByUserId(1)).thenReturn(orderList);
+        assertEquals(orderList, orderService.getOrdersByUserId(1));
     }
 }

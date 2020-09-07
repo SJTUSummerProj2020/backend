@@ -5,6 +5,7 @@ import com.se128.jupiter.entity.Order;
 import com.se128.jupiter.entity.User;
 import com.se128.jupiter.repository.GoodsRepository;
 import com.se128.jupiter.repository.UserRepository;
+import net.sf.json.JSONObject;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -69,16 +70,20 @@ public class UserDaoImpl implements UserDao {
 
     @Override
     public User editUser(User user) {
+        // System.out.println(JSONObject.fromObject(user).toString());
         User user1 = userRepository.getUserByUserId(user.getUserId());
         user1.setBuy0(user.getBuy0());
         user1.setBuy1(user.getBuy1());
         user1.setBuy2(user.getBuy2());
         user1.setBuy3(user.getBuy3());
+        user1.setBuy4(user.getBuy4());
+        user1.setBuy5(user.getBuy5());
         user1.setUserType(user.getUserType());
-        user1.setUsername(user1.getUsername());
+        user1.setUsername(user.getUsername());
         user1.setPhone(user.getPhone());
         user1.setPassword(user.getPassword());
-        return userRepository.saveAndFlush(user);
+        // System.out.println(JSONObject.fromObject(user1).toString());
+        return userRepository.saveAndFlush(user1);
     }
 
     @Override

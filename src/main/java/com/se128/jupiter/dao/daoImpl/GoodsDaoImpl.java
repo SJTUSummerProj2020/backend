@@ -34,12 +34,9 @@ public class GoodsDaoImpl implements GoodsDao {
     public Goods getGoodsByGoodsId(Integer goodsId) {
         Detail detail;
         Goods goods = goodsRepository.getGoodsByGoodsId(goodsId);
-        try{
-            detail = detailRepository.getDetailByGoodsId(goodsId);
-            goods.setDetail(detail.getDetail());
-        }catch(Exception e){
-            return null;
-        }
+
+        detail = detailRepository.getDetailByGoodsId(goodsId);
+        goods.setDetail(detail.getDetail());
         return goods;
     }
 
@@ -79,8 +76,7 @@ public class GoodsDaoImpl implements GoodsDao {
         Goods goods1 = goodsRepository.saveAndFlush(goods);
         Integer goodsId = goods1.getGoodsId();
         List<GoodsDetail> goodsDetails = goods1.getGoodsDetails();
-        for(GoodsDetail item : goodsDetails)
-        {
+        for(GoodsDetail item : goodsDetails) {
             item.setGoodsId(goodsId);
         }
         goodsDetailRepository.saveAll(goodsDetails);
@@ -98,9 +94,7 @@ public class GoodsDaoImpl implements GoodsDao {
                 item.setSurplus(-1);
             }
             goodsDetailRepository.saveAll(goodsDetails);
-
-        }
-        catch (Exception e){
+        } catch (Exception e){
             System.out.println("Can't delete");
         }
     }
@@ -124,19 +118,16 @@ public class GoodsDaoImpl implements GoodsDao {
     @Override
     public Page<Goods> getAllGoods(Integer pageId, Integer pageSize, Integer goodsType) {
         PageRequest pageRequest = PageRequest.of(pageId,pageSize);
-        if(goodsType==-1)
-        {
+        if(goodsType==-1) {
             try {
                 return goodsRepository.findAll(pageRequest);
             }
-            catch (Exception e)
-            {
+            catch (Exception e) {
                 System.out.println("error");
                 return null;
             }
         }
-        else
-        {
+        else {
             return goodsRepository.findByGoodsType(goodsType,pageRequest);
         }
     }

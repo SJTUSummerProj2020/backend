@@ -36,7 +36,7 @@ public class OrderDaoImpl implements OrderDao {
     @Override
     public Order addOrder(Order order,Integer detailId) {
         GoodsDetail goodsDetail = goodsDetailRepository.getGoodsDetailByDetailId(detailId);
-        if(goodsDetail.getSurplus()==1){
+        if(goodsDetail.getSurplus() == 1){
             order.setGoodsDetail(goodsDetail);
             Integer goodsId = goodsDetail.getGoodsId();
             Goods goods = goodsRepository.getGoodsByGoodsId(goodsId);
@@ -48,12 +48,14 @@ public class OrderDaoImpl implements OrderDao {
             Double totalPrice = price * order.getNumber();
             order.setPrice(totalPrice);
             User user = userRepository.getUserByUserId(order.getUserId());
-            switch (goodsType)
-            {
+            switch (goodsType) {
                 case 0:user.setBuy0(user.getBuy0()+1);break;
                 case 1:user.setBuy1(user.getBuy1()+1);break;
                 case 2:user.setBuy2(user.getBuy2()+1);break;
                 case 3:user.setBuy3(user.getBuy3()+1);break;
+                case 4:user.setBuy4(user.getBuy4()+1);break;
+                case 5:user.setBuy5(user.getBuy5()+1);break;
+                default: break;
             }
             userRepository.saveAndFlush(user);
             return orderRepository.saveAndFlush(order);

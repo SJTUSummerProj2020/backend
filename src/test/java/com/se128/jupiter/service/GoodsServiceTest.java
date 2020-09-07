@@ -103,8 +103,8 @@ class GoodsServiceTest {
     @Test
     void getGoodsByName() {
         Integer goodsId = 1;
-        String name = "test test1";
-        Goods goods = new Goods();
+        String name = "test name";
+        Goods goods =  new Goods();
         goods.setGoodsId(goodsId);
         goods.setName(name);
         List<Goods> goodsList = new LinkedList<>();
@@ -112,7 +112,7 @@ class GoodsServiceTest {
         goodsList.add(goods);
 
         when(goodsDao.getGoodsByName("test")).thenReturn(goodsList);
-        when(goodsDao.getGoodsByName("test1")).thenReturn(goodsList);
+        when(goodsDao.getGoodsByName("name")).thenReturn(goodsList);
         assertEquals(goodsList, goodsService.getGoodsByName(name));
     }
 
@@ -217,39 +217,11 @@ class GoodsServiceTest {
     }
 
     @Test
-    void addAuction(){
-        Integer goodsId = 1;
-        Integer detailId = 1;
-        Auction auction = new Auction();
-        Goods goods = new Goods();
-        GoodsDetail detail = new GoodsDetail();
-        when(goodsDao.getGoodsByGoodsId(goodsId)).thenReturn(goods);
-        when(goodsDao.getGoodsDetailByDetailId(detailId)).thenReturn(detail);
-        when(auctionDao.addAuction(auction)).thenReturn(auction);
-        assertEquals(auction, goodsService.addAuction(auction, goodsId, detailId));
-    }
-
-    @Test
     void deleteActionByAuctionId(){
         Auction auction = new Auction();
         Integer auctionId = 1;
         doNothing().when(auctionDao).deleteAuctionByAuctionId(auctionId);
         goodsService.deleteAuctionByAuctionId(auctionId);
-    }
-
-    @Test
-    void editAuction(){
-        Integer goodsId = 1;
-        Integer detailId = 1;
-        Goods goods = new Goods();
-        GoodsDetail detail = new GoodsDetail();
-        Auction auction = new Auction();
-
-        when(goodsDao.getGoodsByGoodsId(goodsId)).thenReturn(goods);
-        when(goodsDao.getGoodsDetailByDetailId(detailId)).thenReturn(detail);
-        when(auctionDao.editAuction(auction)).thenReturn(auction);
-
-        assertEquals(auction, goodsService.editAuction(auction, detailId, goodsId));
     }
 
     @Test
@@ -278,5 +250,34 @@ class GoodsServiceTest {
 
         when(goodsDao.getRecommendGoodsInAll(number)).thenReturn(goodsList);
         assertEquals(goodsList, goodsService.getRecommendGoodsInAll(number));
+    }
+    @Test
+    void deleteAuctionByAuctionId(){
+        doNothing().when(auctionDao).deleteAuctionByAuctionId(1);
+        goodsService.deleteAuctionByAuctionId(1);
+    }
+
+    @Test
+    void addAuction() {
+        Goods goods = new Goods();
+        GoodsDetail goodsDetail = new GoodsDetail();
+        Auction auction = new Auction();
+
+        when(goodsDao.getGoodsByGoodsId(1)).thenReturn(goods);
+        when(goodsDao.getGoodsDetailByDetailId(1)).thenReturn(goodsDetail);
+        when(auctionDao.addAuction(auction)).thenReturn(auction);
+        assertEquals(auction, goodsService.addAuction(auction, 1, 1));
+    }
+
+    @Test
+    void editAuction(){
+        Goods goods = new Goods();
+        GoodsDetail goodsDetail = new GoodsDetail();
+        Auction auction = new Auction();
+
+        when(goodsDao.getGoodsByGoodsId(1)).thenReturn(goods);
+        when(goodsDao.getGoodsDetailByDetailId(1)).thenReturn(goodsDetail);
+        when(auctionDao.editAuction(auction)).thenReturn(auction);
+        assertEquals(auction, goodsService.editAuction(auction, 1, 1));
     }
 }

@@ -110,11 +110,30 @@ class UserDaoTest {
     }
 
     @Test
+    void editUser(){
+        User user = new User();
+        user.setUserId(1);
+        user.setBuy0(1);
+        user.setBuy1(1);
+        user.setBuy2(1);
+        user.setBuy3(1);
+        user.setBuy4(1);
+        user.setBuy5(1);
+        user.setUserType(0);
+        user.setUsername("test");
+        user.setPhone("111");
+        user.setPassword("111");
+
+        when(userRepository.saveAndFlush(user)).thenReturn(user);
+        when(userRepository.getUserByUserId(1)).thenReturn(user);
+        assertEquals(user, userDao.editUser(user));
+    }
+
+    @Test
     void getUserByUsername(){
-        String username = "root";
         User user = new User();
 
-        when(userRepository.getUserByUsername(username)).thenReturn(user);
-        assertEquals(user, userDao.getUserByUsername(username));
+        when(userRepository.getUserByUsername("test")).thenReturn(user);
+        assertEquals(user, userDao.getUserByUsername("test"));
     }
 }

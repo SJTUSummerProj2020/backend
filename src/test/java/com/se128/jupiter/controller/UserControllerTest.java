@@ -54,7 +54,7 @@ public class UserControllerTest {
         userInfo.put("username", "root");
         userInfo.put("password", "root");
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/user/login")
+                .post("/sso/login")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JSON.toJSONString(userInfo))
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -69,8 +69,40 @@ public class UserControllerTest {
             loginWithAdmin();
 
             // get user by userId
+            JSONObject param = new JSONObject();
+            param.put("userId", 1);
             String responseString = mockMvc.perform(MockMvcRequestBuilders
                     .get("/user/getUserById/1")
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content(JSON.toJSONString(param))
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
+                    .session(session)
+            ).andExpect(MockMvcResultMatchers.status().isOk())
+                    .andDo(MockMvcResultHandlers.print())
+                    .andReturn().getResponse().getContentAsString();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+        try{
+            // login
+            com.alibaba.fastjson.JSONObject userInfo = new com.alibaba.fastjson.JSONObject();
+            userInfo.put("username", "user");
+            userInfo.put("password", "user");
+            mockMvc.perform(MockMvcRequestBuilders
+                    .post("/sso/login")
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content(JSON.toJSONString(userInfo))
+                    .session(session)
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
+            ).andReturn();
+
+            // get user by userId
+            JSONObject param = new JSONObject();
+            param.put("userId", 1);
+            String responseString = mockMvc.perform(MockMvcRequestBuilders
+                    .get("/user/getUserById/1")
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content(JSON.toJSONString(param))
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .session(session)
             ).andExpect(MockMvcResultMatchers.status().isOk())
@@ -88,9 +120,10 @@ public class UserControllerTest {
             param.put("username", "root");
             param.put("password", "root");
             String responseString = mockMvc.perform(MockMvcRequestBuilders
-                    .post("/user/login")
+                    .post("/sso/login")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(JSON.toJSONString(param))
+                    .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                 ).andExpect(MockMvcResultMatchers.status().isOk())
                 .andDo(MockMvcResultHandlers.print())
@@ -106,9 +139,10 @@ public class UserControllerTest {
             param.put("username", "root");
             param.put("password", "root1");
             String responseString = mockMvc.perform(MockMvcRequestBuilders
-                    .post("/user/login")
+                    .post("/sso/login")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(JSON.toJSONString(param))
+                    .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -124,9 +158,10 @@ public class UserControllerTest {
             param.put("username", "ban");
             param.put("password", "ban");
             String responseString = mockMvc.perform(MockMvcRequestBuilders
-                    .post("/user/login")
+                    .post("/sso/login")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(JSON.toJSONString(param))
+                    .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -155,6 +190,7 @@ public class UserControllerTest {
                     .post("/user/register")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(JSON.toJSONString(param))
+                    .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -168,10 +204,12 @@ public class UserControllerTest {
             password = "test";
             param.put("username", username);
             param.put("password", password);
+            param.put("nickname", "test");
             responseString = mockMvc.perform(MockMvcRequestBuilders
                     .post("/user/register")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(JSON.toJSONString(param))
+                    .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -190,7 +228,7 @@ public class UserControllerTest {
         try{
             JSONObject param = new JSONObject();
             String responseString = mockMvc.perform(MockMvcRequestBuilders
-                    .post("/user/logout")
+                    .post("/sso/logout")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(JSON.toJSONString(param))
                     .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -210,17 +248,17 @@ public class UserControllerTest {
             userInfo.put("username", "root");
             userInfo.put("password", "root");
             MvcResult loginResult = mockMvc.perform(MockMvcRequestBuilders
-                    .post("/user/login")
+                    .post("/sso/login")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(JSON.toJSONString(userInfo))
-                    .accept(MediaType.APPLICATION_JSON_UTF8)
                     .session(session)
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andReturn();
             System.out.println(loginResult.getResponse().getContentAsString());
 
             JSONObject param = new JSONObject();
             String responseString = mockMvc.perform(MockMvcRequestBuilders
-                    .post("/user/logout")
+                    .post("/sso/logout")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(JSON.toJSONString(param))
                     .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -242,7 +280,9 @@ public class UserControllerTest {
 
         try{
             String responseString = mockMvc.perform(MockMvcRequestBuilders
-                    .get("/user/checkSession")
+                    .get("/sso/checkSession")
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content("")
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -256,18 +296,18 @@ public class UserControllerTest {
             userInfo.put("username", "root");
             userInfo.put("password", "root");
             MvcResult loginResult = mockMvc.perform(MockMvcRequestBuilders
-                    .post("/user/login")
+                    .post("/sso/login")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(JSON.toJSONString(userInfo))
-                    .accept(MediaType.APPLICATION_JSON_UTF8)
                     .session(session)
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andReturn();
             System.out.println(loginResult.getResponse().getContentAsString());
 
             String responseString = mockMvc.perform(MockMvcRequestBuilders
-                    .get("/user/checkSession")
-                    .accept(MediaType.APPLICATION_JSON_UTF8)
+                    .get("/sso/checkSession")
                     .session(session)
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
                     .andReturn().getResponse().getContentAsString();
@@ -280,8 +320,13 @@ public class UserControllerTest {
     public void getOrdersByUserId() {
         try{
             loginWithAdmin();
+            String userId = "1";
+            JSONObject param = new JSONObject();
+            param.put("userId", userId);
             String responseString = mockMvc.perform(MockMvcRequestBuilders
                     .get("/order/getOrdersByUserId/1")
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content(param.toJSONString())
                     .accept(MediaType.APPLICATION_JSON_UTF8)
                     .session(session)
             ).andExpect(MockMvcResultMatchers.status().isOk())
@@ -299,6 +344,8 @@ public class UserControllerTest {
             loginWithAdmin();
             String responseString = mockMvc.perform(MockMvcRequestBuilders
                     .get("/user/getAllUsers")
+                    .contentType(MediaType.APPLICATION_JSON_UTF8)
+                    .content("")
                     .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
@@ -311,8 +358,6 @@ public class UserControllerTest {
 
 
     @Test
-    @Transactional
-    @Rollback(value = true)
     public void changeUserStatusByUserId()
     {
         try{
@@ -324,8 +369,8 @@ public class UserControllerTest {
                     .post("/user/changeUserStatusByUserId")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(param.toJSONString())
-                    .accept(MediaType.APPLICATION_JSON_UTF8)
                     .session(session)
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
                     .andReturn().getResponse().getContentAsString();
@@ -341,6 +386,7 @@ public class UserControllerTest {
                     .post("/user/changeUserStatusByUserId")
                     .contentType(MediaType.APPLICATION_JSON_UTF8)
                     .content(param.toJSONString())
+                    .session(session)
                     .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
@@ -356,14 +402,16 @@ public class UserControllerTest {
             loginWithAdmin();
             User user = new User();
             user.setUserId(2);
-            user.setUsername("user2");
-            user.setPassword("user2");
+            user.setUsername("user");
+            user.setPassword("user");
             user.setPhone("1111");
             user.setUserType(1);
-            user.setBuy0(0);
-            user.setBuy1(0);
-            user.setBuy2(0);
-            user.setBuy3(0);
+            user.setBuy0(1);
+            user.setBuy1(1);
+            user.setBuy2(1);
+            user.setBuy3(1);
+            user.setBuy4(1);
+            user.setBuy5(1);
             net.sf.json.JSONObject data = net.sf.json.JSONObject.fromObject(user);
             String responseString = mockMvc.perform(MockMvcRequestBuilders
                     .post("/user/editUser")
