@@ -26,6 +26,17 @@ services:
     image: grafana/grafana
     ports:
       - "3000:3000"
+    environment: 
+      GF_RENDERING_SERVER_URL: renderer:8686/render
+      GF_RENDERING_CALLBACK_URL: grafana:3000
+      GF_LOG_FILTERS: rendering:debug
+    networks:
+      - demo
+
+  renderer:
+    image: grafana/grafana-image-renderer:latest
+    ports:
+      - "8686:8686"
     networks:
       - demo
 

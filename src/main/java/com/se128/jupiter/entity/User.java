@@ -19,6 +19,9 @@ public class User {
     @Column(name = "user_name")
     private String username;
 
+    @Column(name = "nick_name")
+    private String nickname;
+
     @Column(name = "password")
     private String password;
 
@@ -34,6 +37,8 @@ public class User {
     private Integer buy1;
     private Integer buy2;
     private Integer buy3;
+    private Integer buy4;
+    private Integer buy5;
 
     public Integer getUserId() {
         return this.userId;
@@ -99,6 +104,10 @@ public class User {
         return buy3;
     }
 
+    public Integer getBuy4() {return buy4;}
+
+    public Integer getBuy5() {return buy5;}
+
     public void setBuy0(Integer buy0) {
         this.buy0 = buy0;
     }
@@ -113,5 +122,21 @@ public class User {
 
     public void setBuy3(Integer buy3) {
         this.buy3 = buy3;
+    }
+
+    public void setBuy4(Integer buy4) {
+        this.buy4 = buy4;
+    }
+
+    public void setBuy5(Integer buy5) {
+        this.buy5 = buy5;
+    }
+
+    public void setNickname(String nickname) {
+        this.nickname = nickname;
+    }
+
+    public String getNickname() {
+        return nickname;
     }
 }

@@ -62,4 +62,12 @@ class OrderServiceTest {
         when(orderDao.getAllOrders()).thenReturn(orderList);
         assertEquals(orderList, orderService.getAllOrders());
     }
+
+    @Test
+    void getOrdersByUserId(){
+        List<Order> orderList= new ArrayList<>();
+
+        when(orderDao.getOrdersByUserId(1)).thenReturn(orderList);
+        assertEquals(orderList, orderService.getOrdersByUserId(1));
+    }
 }

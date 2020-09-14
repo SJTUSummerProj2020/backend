@@ -60,6 +60,10 @@ class GoodsDaoTest {
         when(detailRepository.getDetailByGoodsId(goodsId)).thenReturn(detail);
         assertEquals(goods, goodsDao.getGoodsByGoodsId(goodsId));
 
+        //throw exception
+        // doThrow(new RuntimeException()).when(detailRepository).getDetailByGoodsId(goodsId);
+        // assertNull(goodsDao.getGoodsByGoodsId(goodsId));
+
     }
 
     @Test
@@ -97,12 +101,21 @@ class GoodsDaoTest {
     @Test
     void deleteGoodsByGoodsId() {
         Integer goodsId = 1;
+        Goods goods = new Goods();
+        GoodsDetail goodsDetail = new GoodsDetail();
+        List<GoodsDetail> goodsDetailList = new ArrayList<>();
+        goodsDetailList.add(goodsDetail);
+        goods.setGoodsDetails(goodsDetailList);
+
+        when(goodsRepository.getGoodsByGoodsId(goodsId)).thenReturn(goods);
+        when(goodsRepository.saveAndFlush(goods)).thenReturn(goods);
+        when(goodsDetailRepository.saveAll(goodsDetailList)).thenReturn(goodsDetailList);
         doNothing().when(goodsDetailRepository).deleteByGoodsId(goodsId);
         doNothing().when(goodsRepository).deleteById(goodsId);
         goodsDao.deleteGoodsByGoodsId(goodsId);
 
         // 测试异常抛出
-        doThrow(new RuntimeException("异常")).when(goodsDetailRepository).deleteByGoodsId(goodsId);
+        doThrow(new RuntimeException("异常")).when(goodsRepository).getGoodsByGoodsId(goodsId);
         goodsDao.deleteGoodsByGoodsId(goodsId);
     }
 

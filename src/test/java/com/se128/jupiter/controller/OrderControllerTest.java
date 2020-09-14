@@ -11,7 +11,6 @@ import org.springframework.boot.test.autoconfigure.web.servlet.AutoConfigureMock
 import org.springframework.boot.test.context.SpringBootTest;
 import org.springframework.http.MediaType;
 import org.springframework.mock.web.MockHttpSession;
-import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.junit4.SpringRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
@@ -19,7 +18,6 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultHandlers;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 import org.springframework.test.web.servlet.setup.MockMvcBuilders;
-import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.context.WebApplicationContext;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -51,7 +49,7 @@ class OrderControllerTest {
         userInfo.put("username", "root");
         userInfo.put("password", "root");
         mockMvc.perform(MockMvcRequestBuilders
-                .post("/user/login")
+                .post("/sso/login")
                 .contentType(MediaType.APPLICATION_JSON_UTF8)
                 .content(JSON.toJSONString(userInfo))
                 .accept(MediaType.APPLICATION_JSON_UTF8)
@@ -60,14 +58,13 @@ class OrderControllerTest {
     }
 
     @Test
-    @Transactional
-    @Rollback(value = true)
     void addOrder() {
         // normal situation
         try{
             loginWithAdmin();
             String userId = "1";
-            String detailId = "8897";
+            // 11970
+            String detailId = "11970";
             String number = "2";
             JSONObject param = new JSONObject();
             param.put("userId", userId);
@@ -78,18 +75,22 @@ class OrderControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(JSON.toJSONString(param))
                     .session(session)
-                    .accept(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
                     .andReturn().getResponse().getContentAsString();
+
         } catch (Exception e){
             e.printStackTrace();
         }
-        // no supply
+    }
+
+    @Test
+    void addOrder1(){
         try{
             loginWithAdmin();
             String userId = "1";
-            String detailId = "1895";
+            String detailId = "1";
             String number = "2";
             JSONObject param = new JSONObject();
             param.put("userId", userId);
@@ -100,27 +101,16 @@ class OrderControllerTest {
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(JSON.toJSONString(param))
                     .session(session)
-                    .accept(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
                     .andReturn().getResponse().getContentAsString();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-        // before login
-        try{
-            String userId = "1";
-            String detailId = "1895";
-            String number = "2";
-            JSONObject param = new JSONObject();
-            param.put("userId", userId);
-            param.put("detailId", detailId);
-            param.put("number", number);
-            String responseString = mockMvc.perform(MockMvcRequestBuilders
+            // without login
+            responseString = mockMvc.perform(MockMvcRequestBuilders
                     .put("/order/addOrder")
                     .contentType(MediaType.APPLICATION_JSON)
                     .content(JSON.toJSONString(param))
-                    .accept(MediaType.APPLICATION_JSON)
+                    .accept(MediaType.APPLICATION_JSON_UTF8)
             ).andExpect(MockMvcResultMatchers.status().isOk())
                     .andDo(MockMvcResultHandlers.print())
                     .andReturn().getResponse().getContentAsString();
@@ -145,4 +135,18 @@ class OrderControllerTest {
         }
     }
 
+    @Test
+    void getOrdersByUserId(){
+        try{
+            String responseString = mockMvc.perform(MockMvcRequestBuilders
+                    .get("/order/getOrdersByUserId/1")
+                    .accept(MediaType.APPLICATION_JSON)
+                    .session(session)
+            ).andExpect(MockMvcResultMatchers.status().isOk())
+                    .andDo(MockMvcResultHandlers.print())
+                    .andReturn().getResponse().getContentAsString();
+        }catch(Exception e){
+            e.printStackTrace();
+        }
+    }
 }
